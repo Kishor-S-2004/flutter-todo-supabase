@@ -29,7 +29,6 @@ class TodoShowDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ---- Icon + Title Row ----
             Row(
               children: [
                 Container(
@@ -71,12 +70,10 @@ class TodoShowDialog extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // ---- Divider ----
             Divider(color: Colors.grey.shade100, thickness: 1),
 
             const SizedBox(height: 20),
 
-            // ---- Label ----
             Text(
               'Task Description',
               style: TextStyle(
@@ -89,7 +86,6 @@ class TodoShowDialog extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            // ---- Input Field ----
             TextField(
               controller: controller,
               autofocus: true,

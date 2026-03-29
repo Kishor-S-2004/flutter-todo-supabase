@@ -125,17 +125,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           vertical: 4,
                         ),
 
-                        title: Text(
-                          todo.todoContent!,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            decoration: todo.isCompleted!
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
-                            color: todo.isCompleted!
-                                ? Colors.grey
-                                : Colors.black,
+                        title: GestureDetector(
+                          onTap: () {
+                            _controller.text = todo.todoContent!;
+
+                            showDialog(
+                              context: context,
+                              builder: (_) => TodoShowDialog(
+                                controller: _controller,
+                                isEdit: true,
+                                todo: todo,
+                              ),
+                            );
+                          },
+                          child: Text(
+                            todo.todoContent!,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              decoration: todo.isCompleted!
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                              color: todo.isCompleted!
+                                  ? Colors.grey
+                                  : Colors.black,
+                            ),
                           ),
                         ),
 
