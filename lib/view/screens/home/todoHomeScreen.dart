@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_project/model/todoModel.dart';
+import 'package:todo_project/services/authServices.dart';
 import 'package:todo_project/services/todo_services.dart';
+import 'package:todo_project/view/screens/auth/loginScreen.dart';
 import 'package:todo_project/view/widget/todoWidgets.dart';
 import 'package:todo_project/viewModel/todoProvider.dart';
+
+import '../../../viewModel/authProvider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _controller = TextEditingController();
   final TodoServices todoServices = TodoServices();
+  // final authServices = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {
+            context.read<AuthProvider>().logout();
+            // authServices.logout();
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+          }, icon: Icon(Icons.logout_rounded,color: Colors.black,)),
+        ],
       ),
 
       floatingActionButton: FloatingActionButton(
@@ -41,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TodoShowDialog(controller: _controller, isEdit: false),
           );
         },
-        child: const Icon(Icons.add,color: Colors.white,),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
 
       body: user == null
@@ -68,8 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.note_alt_outlined,
-                            size: 80, color: Colors.grey.shade400),
+                        Icon(
+                          Icons.note_alt_outlined,
+                          size: 80,
+                          color: Colors.grey.shade400,
+                        ),
                         const SizedBox(height: 10),
                         Text(
                           'No todos yet',
@@ -86,7 +101,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     final todo = userTodos[index];
 
                     return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       decoration: BoxDecoration(
                         color: todo.isCompleted!
@@ -102,8 +120,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       child: ListTile(
-                        contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 4,
+                        ),
 
                         title: Text(
                           todo.todoContent!,
@@ -122,7 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         leading: GestureDetector(
                           onTap: () {
                             todoServices.completedTodo(
-                                todo, !todo.isCompleted!);
+                              todo,
+                              !todo.isCompleted!,
+                            );
                           },
                           child: Icon(
                             todo.isCompleted!
@@ -139,36 +161,39 @@ class _HomeScreenState extends State<HomeScreen> {
                             todo.isCompleted!
                                 ? todoServices.deleteTodo(todo)
                                 : showDialog(
-                              context: context,
-                              builder: (_) => AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                title: const Text('Delete Todo'),
-                                content: const Text(
-                                    'Are you sure you want to delete this todo?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      todoServices.deleteTodo(todo);
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text(
-                                      'Delete',
-                                      style: TextStyle(color: Colors.red),
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      title: const Text('Delete Todo'),
+                                      content: const Text(
+                                        'Are you sure you want to delete this todo?',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            todoServices.deleteTodo(todo);
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            'Delete',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
+                                  );
                           },
-                          icon: const Icon(Icons.delete_outline,
-                              color: Colors.red),
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: Colors.red,
+                          ),
                         ),
                       ),
                     );

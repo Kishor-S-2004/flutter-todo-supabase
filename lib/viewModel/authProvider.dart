@@ -8,14 +8,14 @@ class AuthProvider extends ChangeNotifier {
   String? successMessage;
   bool isLoading = false;
 
-  Future<void> register(String email, String password,String name) async {
+  Future<bool> register(String email, String password,String name) async {
     errorMessage = null;
     successMessage = null;
 
     if (email.isEmpty || password.isEmpty) {
-      errorMessage = 'Please fill both fields';
+      errorMessage = 'Please fill all fields';
       notifyListeners();
-      return;
+      return false;
     }
 
     try {
@@ -26,24 +26,26 @@ class AuthProvider extends ChangeNotifier {
 
       if (response != null && response.user != null) {
         successMessage = 'Registration Successful!';
+      return true;
       } else {
         errorMessage = 'Registration failed';
+        return false;
       }
     } catch (e) {
-      errorMessage = e.toString();
+      errorMessage = e.toString();return false;
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<void> login(String email,String password)async{
+  Future<bool> login(String email,String password)async{
       errorMessage = null;
       successMessage = null;
     if(email.isEmpty || password.isEmpty){
       errorMessage = 'Please Fill Both Fields';
       notifyListeners();
-      return;
+      return false;
     }try{
       isLoading = true;
       notifyListeners();
@@ -53,15 +55,22 @@ class AuthProvider extends ChangeNotifier {
       if(response != null || response?.user != null){
         successMessage = 'Logged in Successfully';
         notifyListeners();
+        return true;
       }else{
         errorMessage = 'Login failed';
         notifyListeners();
+        return false;
       }
       }catch(e){
       errorMessage = e.toString();
+      return false;
       }finally{
       isLoading = false;
       notifyListeners();
       }
+  }
+
+  Future<void> logout() async {
+    await authService.logout();
   }
 }

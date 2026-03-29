@@ -126,8 +126,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
 
                           final vm = context.read<AuthProvider>();
-                          await vm.register(email, password,name);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+                          final success = await vm.register(email, password,name);
+                          if(success){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(vm.errorMessage ??'Registration failed')),
+                            );
+                            vm.errorMessage = null;
+                          }
 
                           _emailController.clear();
                           _nameController.clear();
@@ -138,6 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(vm.errorMessage!)),
                             );
+                            vm.errorMessage = null;
                           }
                         },
                 ),

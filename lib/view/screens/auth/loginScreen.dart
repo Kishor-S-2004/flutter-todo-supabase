@@ -78,9 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
 
                     final vm = context.read<AuthProvider>();
-                    await vm.login(email, password);
+                    final success = await vm.login(email, password);
 
-                    if (vm.errorMessage == null) {
+                    if (success) {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -92,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(vm.errorMessage!)),
                       );
+                      vm.errorMessage = null;
                     }
 
                     _emailController.clear();
@@ -101,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(vm.errorMessage!)),
                       );
+                      vm.errorMessage = null;
                     }
                   },
                   isLoading: provider.isLoading,
