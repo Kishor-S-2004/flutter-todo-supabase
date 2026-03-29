@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         title: GestureDetector(
-                          onTap: () {
+                          onTap: todo.isCompleted! ? null : () {
                             _controller.text = todo.todoContent!;
 
                             showDialog(
