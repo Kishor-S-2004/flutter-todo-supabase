@@ -151,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
                     },
                     child: Text(
-                      "Already have an account? Login",
+                      "Already have an account? Sign In",
                       style: TextStyle(color: Colors.grey.shade700),
                     ),
                   ),

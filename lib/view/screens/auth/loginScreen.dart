@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_project/view/screens/auth/registerScreen.dart';
 import 'package:todo_project/view/screens/home/todoHomeScreen.dart';
 import 'package:todo_project/view/widget/authWidgets.dart';
 import 'package:todo_project/viewModel/authProvider.dart';
@@ -103,6 +104,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                   },
                   isLoading: provider.isLoading,
+                ),
+
+                const SizedBox(height: 20),
+
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>RegisterScreen(),));
+                    },
+                    child: Text(
+                      "Doesn't have an Account? Sign Up",
+                      style: TextStyle(color: Colors.grey.shade700),
+                    ),
+                  ),
                 ),
               ],
             ),
